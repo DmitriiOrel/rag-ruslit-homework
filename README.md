@@ -1,6 +1,6 @@
-# Gutenberg RAG Homework
+# RusLit RAG Homework
 
-Учебный RAG над открытыми текстами Project Gutenberg. Pipeline полностью локальный:
+Учебный русскоязычный RAG над открытым корпусом русской литературы RusLit. Pipeline полностью локальный:
 
 ```
 datasets.json -> ingest -> chunking -> TF-IDF index -> retrieval -> demo-answer -> Streamlit UI
@@ -26,7 +26,7 @@ uv run python scripts/check_retrieval.py
 uv run python scripts/check_generator.py
 ```
 
-Если нужно пересобрать исходный корпус из Project Gutenberg:
+Если нужно пересобрать исходный корпус из RusLit:
 
 ```bash
 uv run python scripts/prepare_datasets.py
@@ -35,27 +35,32 @@ uv run python scripts/build_index.py
 
 ## Данные
 
-Источник: открытые public-domain тексты Project Gutenberg.
+Источник: [d0rj/RusLit](https://github.com/d0rj/RusLit), открытый корпус русской литературы в UTF-8. В README источника указано, что тексты находятся в public domain; также есть Kaggle-зеркало.
 
-Индексируется поле `text` из `data/raw/datasets.json`. Метаданные `doc_id`, `title` и `source` не участвуют в TF-IDF, но используются для ссылок на источники.
+Индексируется поле `text` из `data/raw/datasets.json`. Метаданные `doc_id`, `title`, `author` и `source` не участвуют в TF-IDF, но используются для ссылок на источники.
 
-Использованные книги:
+Использованные произведения:
 
-| Gutenberg ID | Книга |
+| Автор | Произведение |
 |---|---|
-| 1342 | Pride and Prejudice |
-| 11 | Alice's Adventures in Wonderland |
-| 84 | Frankenstein |
-| 345 | Dracula |
-| 1661 | The Adventures of Sherlock Holmes |
+| Лев Толстой | Анна Каренина |
+| Лев Толстой | Война и мир. Том 1 |
+| Федор Достоевский | Братья Карамазовы |
+| Федор Достоевский | Идиот |
+| Николай Гоголь | Мертвые души |
+| Николай Гоголь | Шинель |
+| Николай Гоголь | Ревизор |
+| Антон Чехов | Палата N 6 |
+| Антон Чехов | Каштанка |
+| Иван Тургенев | Отцы и дети |
 
 Подробно: [doc/DATA.md](doc/DATA.md).
 
 Фактический масштаб после подготовки данных:
 
 - `data/raw/datasets.json`: 1250 записей.
-- `data/processed/chunks.jsonl`: 1667 чанков после нарезки.
-- TF-IDF index: 49692 признака.
+- `data/processed/chunks.jsonl`: 3378 чанков после нарезки.
+- TF-IDF index: 205449 признаков.
 
 ## Demo-вопросы
 
@@ -63,16 +68,16 @@ uv run python scripts/build_index.py
 
 | Вопрос | Ожидаемое поведение |
 |---|---|
-| What did Alice find on the table with a paper label? | Ответ по `Alice's Adventures in Wonderland`: little bottle и label `DRINK ME`. |
-| Which professor of natural philosophy did Victor visit first at Ingolstadt? | Ответ по `Frankenstein`: M. Krempe, professor of natural philosophy. |
-| What was Holmes's axiom about little things? | Ответ по `The Adventures of Sherlock Holmes`: little things are infinitely the most important. |
-| How do I reset a Kubernetes cluster? | Negative-case: система должна отказаться, потому что в корпусе нет релевантного контекста. |
+| Что смешалось в доме Облонских? | Ответ по `Анна Каренина`: "Все смешалось в доме Облонских". |
+| Какая фамилия была у чиновника? | Ответ по `Шинель`: фамилия чиновника была Башмачкин. |
+| Что сказал незнакомец после слов Без имени нельзя? | Ответ по `Каштанка`: "Ты будешь - Тетка". |
+| Как перезапустить кластер Kubernetes? | Negative-case: система отказывается, потому что в корпусе нет релевантного контекста. |
 
 ## Логи проверки
 
 ```text
 uv run python scripts/build_index.py
-Index built: 1250 documents, 1667 chunks, 49692 TF-IDF features
+Index built: 1250 documents, 3378 chunks, 205449 TF-IDF features
 
 uv run pytest tests/ -v
 11 passed
@@ -81,19 +86,19 @@ uv run pytest tests/ -v
 Короткий demo-output:
 
 ```text
-QUESTION: What did Alice find on the table with a paper label?
-ANSWER: ... little bottle ... paper label ... "DRINK ME" ...
-TOP SOURCE: doc_id=pg11-0015 score=0.214 title=Alice's Adventures in Wonderland
+QUESTION: Что смешалось в доме Облонских?
+ANSWER: Все смешалось в доме Облонских.
+TOP SOURCE: doc_id=ruslit-01-0001 score=0.235 title=Анна Каренина
 
-QUESTION: Which professor of natural philosophy did Victor visit first at Ingolstadt?
-ANSWER: Krempe, professor of natural philosophy.
-TOP SOURCE: doc_id=pg84-0087 score=0.267 title=Frankenstein
+QUESTION: Какая фамилия была у чиновника?
+ANSWER: Фамилия чиновника была Башмачкин.
+TOP SOURCE: doc_id=ruslit-06-0001 score=0.178 title=Шинель
 
-QUESTION: What was Holmes's axiom about little things?
-ANSWER: little things are infinitely the most important.
-TOP SOURCE: doc_id=pg1661-0250 score=0.543 title=The Adventures of Sherlock Holmes
+QUESTION: Что сказал незнакомец после слов Без имени нельзя?
+ANSWER: Незнакомец подумал и сказал: "Ты будешь - Тетка..."
+TOP SOURCE: doc_id=ruslit-09-0009 score=0.150 title=Каштанка
 
-QUESTION: How do I reset a Kubernetes cluster?
+QUESTION: Как перезапустить кластер Kubernetes?
 ANSWER: отказ без выдумок, релевантный контекст не найден.
 TOP SOURCE SCORE: 0.000
 ```
@@ -120,5 +125,6 @@ data/raw/datasets.json
 ## Ограничения MVP
 
 - TF-IDF ищет по словам, а не по глубокому смыслу.
+- Морфология русского языка в MVP не нормализуется, поэтому лучше задавать вопросы словами, близкими к тексту источника.
 - Ответ extractive: система выбирает предложения из источников, без внешней LLM.
 - Если score ниже порога, система отказывается и не придумывает факты.

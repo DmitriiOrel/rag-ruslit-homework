@@ -1,1 +1,1 @@
-"""Local educational RAG over public-domain Gutenberg texts."""
+"""Local educational Russian-language RAG over RusLit texts."""

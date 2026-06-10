@@ -6,11 +6,11 @@ from app.retriever import Retriever
 
 REFUSAL_EMPTY_QUESTION = "Введите вопрос."
 REFUSAL_NO_CONTEXT = (
-    "Я не нашел достаточно релевантных фрагментов в корпусе Project Gutenberg, "
+    "Я не нашел достаточно релевантных фрагментов в корпусе RusLit, "
     "поэтому не буду придумывать ответ без источников."
 )
 
-TOKEN_RE = re.compile(r"[A-Za-z][A-Za-z']{2,}")
+TOKEN_RE = re.compile(r"[A-Za-zА-Яа-яЁё][A-Za-zА-Яа-яЁё'-]{2,}")
 SENTENCE_SPLIT_RE = re.compile(r"(?<=[.!?])\s+")
 
 

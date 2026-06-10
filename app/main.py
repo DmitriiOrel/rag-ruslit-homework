@@ -5,17 +5,17 @@ from app.generator import ask
 
 
 DEMO_QUESTIONS = [
-    "What did Alice find on the table with a paper label?",
-    "Which professor of natural philosophy did Victor visit first at Ingolstadt?",
-    "What was Holmes's axiom about little things?",
-    "How do I reset a Kubernetes cluster?",
+    "Что смешалось в доме Облонских?",
+    "Какая фамилия была у чиновника?",
+    "Что сказал незнакомец после слов Без имени нельзя?",
+    "Как перезапустить кластер Kubernetes?",
 ]
 
 
-st.set_page_config(page_title="Gutenberg RAG", page_icon="G", layout="wide")
+st.set_page_config(page_title="RusLit RAG", page_icon="R", layout="wide")
 
-st.title("Gutenberg RAG")
-st.caption("Локальный учебный RAG: Project Gutenberg -> chunks -> TF-IDF -> ответ с источниками")
+st.title("RusLit RAG")
+st.caption("Локальный учебный RAG: RusLit -> chunks -> TF-IDF -> ответ с источниками")
 
 with st.sidebar:
     st.header("Настройки")

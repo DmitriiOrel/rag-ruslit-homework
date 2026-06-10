@@ -2,7 +2,7 @@
 
 | Шаг | Статус | Результат |
 |---|---|---|
-| Выбрать данные | done | Project Gutenberg, public-domain книги |
+| Выбрать данные | done | RusLit, русская литература public domain |
 | Подготовить `datasets.json` | done | 1000+ абзацев с метаданными |
 | Реализовать ingest | done | Валидация и JSONL |
 | Реализовать chunking | done | Нарезка по словам с overlap |

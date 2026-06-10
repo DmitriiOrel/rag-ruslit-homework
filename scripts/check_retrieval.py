@@ -9,10 +9,10 @@ from app.retriever import Retriever
 
 
 QUESTIONS = [
-    "What did Alice find on the table with a paper label?",
-    "Which professor of natural philosophy did Victor visit first at Ingolstadt?",
-    "What was Holmes's axiom about little things?",
-    "How do I reset a Kubernetes cluster?",
+    "Что смешалось в доме Облонских?",
+    "Какая фамилия была у чиновника?",
+    "Что сказал незнакомец после слов Без имени нельзя?",
+    "Как перезапустить кластер Kubernetes?",
 ]
 
 

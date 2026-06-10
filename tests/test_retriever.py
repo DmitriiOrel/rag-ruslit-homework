@@ -12,18 +12,18 @@ def test_retriever_returns_best_matching_chunk(tmp_path) -> None:
         {
             "chunk_id": "a:0",
             "doc_id": "a",
-            "title": "Alice",
+            "title": "Шинель",
             "source": "memory",
             "chunk_index": 0,
-            "text": "Alice found a golden key on a glass table.",
+            "text": "Фамилия чиновника была Башмачкин.",
         },
         {
             "chunk_id": "b:0",
             "doc_id": "b",
-            "title": "Frankenstein",
+            "title": "Анна Каренина",
             "source": "memory",
             "chunk_index": 0,
-            "text": "Victor studied natural philosophy and chemistry.",
+            "text": "Все смешалось в доме Облонских.",
         },
     ]
     texts = [chunk["text"] for chunk in chunks]
@@ -40,7 +40,7 @@ def test_retriever_returns_best_matching_chunk(tmp_path) -> None:
     write_jsonl(chunks, chunks_path)
 
     retriever = Retriever(vectorizer_path, matrix_path, chunks_path)
-    hits = retriever.search("golden key", k=2)
+    hits = retriever.search("фамилия чиновника", k=2)
 
     assert hits[0]["doc_id"] == "a"
     assert hits[0]["score"] > hits[1]["score"]

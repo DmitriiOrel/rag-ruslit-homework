@@ -1,7 +1,7 @@
 [project]
-name = "rag-gutenberg-homework"
+name = "rag-ruslit-homework"
 version = "0.1.0"
-description = "Educational RAG over Project Gutenberg public-domain texts"
+description = "Educational Russian-language RAG over RusLit public-domain texts"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [

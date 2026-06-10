@@ -2,46 +2,53 @@
 
 ## Источник
 
-Корпус собран из Project Gutenberg - библиотеки public-domain текстов.
+Корпус собран из [d0rj/RusLit](https://github.com/d0rj/RusLit) - открытого набора русской литературы в TXT UTF-8. В README источника указано, что тексты находятся в public domain и могут использоваться как датасет; там же дана ссылка на Kaggle-зеркало.
 
 Скрипт подготовки: `scripts/prepare_datasets.py`.
 
-| Gutenberg ID | URL | Что берется |
+| Автор | Произведение | Путь в RusLit |
 |---|---|---|
-| 1342 | https://www.gutenberg.org/cache/epub/1342/pg1342.txt | Абзацы из `Pride and Prejudice` |
-| 11 | https://www.gutenberg.org/cache/epub/11/pg11.txt | Абзацы из `Alice's Adventures in Wonderland` |
-| 84 | https://www.gutenberg.org/cache/epub/84/pg84.txt | Абзацы из `Frankenstein` |
-| 345 | https://www.gutenberg.org/cache/epub/345/pg345.txt | Абзацы из `Dracula` |
-| 1661 | https://www.gutenberg.org/cache/epub/1661/pg1661.txt | Абзацы из `The Adventures of Sherlock Holmes` |
+| Лев Толстой | Анна Каренина | `prose/Tolstoy/Анна Каренина.txt` |
+| Лев Толстой | Война и мир. Том 1 | `prose/Tolstoy/Война и мир. Том 1.txt` |
+| Федор Достоевский | Братья Карамазовы | `prose/Dostoevsky/Братья Карамазовы.txt` |
+| Федор Достоевский | Идиот | `prose/Dostoevsky/Идиот.txt` |
+| Николай Гоголь | Мертвые души | `prose/Gogol/Мёртвые души.txt` |
+| Николай Гоголь | Шинель | `prose/Gogol/Шинель.txt` |
+| Николай Гоголь | Ревизор | `prose/Gogol/Ревизор.txt` |
+| Антон Чехов | Палата N 6 | `prose/Chekhov/Палата №6.txt` |
+| Антон Чехов | Каштанка | `prose/Chekhov/Каштанка.txt` |
+| Иван Тургенев | Отцы и дети | `prose/Turgenev/Отцы и дети.txt` |
 
 ## Формат `datasets.json`
 
 ```json
 {
-  "doc_id": "pg1342-0001",
-  "title": "Pride and Prejudice",
-  "source": "https://www.gutenberg.org/cache/epub/1342/pg1342.txt",
-  "text": "..."
+  "doc_id": "ruslit-01-0001",
+  "title": "Анна Каренина",
+  "author": "Лев Толстой",
+  "source": "https://github.com/d0rj/RusLit/blob/main/prose/Tolstoy/...",
+  "text": "Все смешалось в доме Облонских..."
 }
 ```
 
 ## Что индексируется
 
-Индексируется только поле `text`. Поля `doc_id`, `title` и `source` остаются метаданными и выводятся в источниках.
+Индексируется только поле `text`. Поля `doc_id`, `title`, `author` и `source` остаются метаданными и выводятся в источниках.
 
 ## Очистка
 
-- Удаляется служебная шапка и подвал Project Gutenberg.
-- Текст разбивается по пустым строкам.
-- Слишком короткие абзацы отбрасываются.
-- Длинные абзацы ограничиваются, чтобы чанки были управляемого размера.
+- Текст читается как UTF-8.
+- Короткие служебные строки и слишком короткие фрагменты отбрасываются.
+- Длинные сплошные фрагменты режутся на группы предложений.
+- Затем pipeline режет документы на чанки по словам с overlap.
+- Добор до 1250 записей идет round-robin по произведениям, чтобы корпус не перекосило в одну книгу.
 
 ## Масштаб
 
 MVP требует минимум 10 текстовых записей. В этом проекте:
 
 - `datasets.json` содержит 1250 записей;
-- после chunking получается 1667 чанков;
-- TF-IDF индекс содержит 49692 признака.
+- после chunking получается 3378 чанков;
+- TF-IDF индекс содержит 205449 признаков.
 
 Это покрывает уровень "отлично" по масштабу входного датасета и индекса.

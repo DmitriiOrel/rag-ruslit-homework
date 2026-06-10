@@ -4,7 +4,7 @@ from app.ingest import ingest_records, normalize_text
 
 
 def test_normalize_text_collapses_spaces() -> None:
-    assert normalize_text(" Alice   found   a key . ") == "Alice found a key."
+    assert normalize_text(" Анна   вошла   в дом . ") == "Анна вошла в дом."
 
 
 def test_ingest_records_rejects_duplicate_doc_id() -> None:

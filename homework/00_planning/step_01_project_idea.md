@@ -1,6 +1,6 @@
 # Step 01: Project Idea
 
-Собрать учебный RAG по public-domain текстам Project Gutenberg.
+Собрать учебный RAG по русскоязычным public-domain текстам RusLit.
 
 Готовность:
 

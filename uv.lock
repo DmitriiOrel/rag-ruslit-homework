@@ -1012,7 +1012,7 @@ wheels = [
 ]
 
 [[package]]
-name = "rag-gutenberg-homework"
+name = "rag-ruslit-homework"
 version = "0.1.0"
 source = { editable = "." }
 dependencies = [
